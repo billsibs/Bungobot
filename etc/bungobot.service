@@ -1,0 +1,6 @@
+[Unit]
+Description=Bungo Bot service
+After=multi-user.target[Service]
+Type=idle
+ExecStart=/usr/bin/python /home/bill/bungobot/bungo.py
+WantedBy=multi-user.target
