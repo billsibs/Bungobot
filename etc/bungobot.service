@@ -1,6 +1,13 @@
 [Unit]
 Description=Bungo Bot service
-After=multi-user.target[Service]
-Type=idle
-ExecStart=/usr/bin/python /home/bill/bungobot/bungo.py
+After=multi-user.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/python3 /home/bill/bungobot/bungo.py
+Restart=always
+RestartSec=5
+
+[Install]
 WantedBy=multi-user.target
+
