@@ -10,7 +10,7 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "gambit.settings")
 django.setup()
 
 from django.db import models
-from django.db.models import Sum,Max,Avg
+from django.db.models import Sum,Max
 from gambitapp.models import gambitStats,GuardianId,GuardianClass
 
 
@@ -136,7 +136,6 @@ def checkStat(statistic):
         'primevalHealing',
         'smallBlockersSent',
         'motesLost',
-        'matches',
     ]
     for s in statsList:
         if statistic.lower() == s.lower():
@@ -189,7 +188,7 @@ def getLeaderboard(stat, mod):
     tempResponse = {}
     modResponse = {}
     temp_stat = checkStat(stat)
-    statsMod = ['avg','max','sum']
+    statsMod = ['max','sum']
     if mod.lower() in statsMod:
         for cid in getClanGuardianList():
             matchCount = gambitStats.objects.filter(guardianId=cid).aggregate(eval(mod.title())(temp_stat))
@@ -197,8 +196,7 @@ def getLeaderboard(stat, mod):
                 tempResponse.update( { cid : matchCount[temp_stat+f'__{mod.lower()}'] } )
         s = [(k, tempResponse[k]) for k in sorted(tempResponse, key=tempResponse.get, reverse=True)]
         for k,v in s[:5]:
-            if mod.lower() == 'avg': v = int(v)
             modResponse.update( {getGuardianNameByClass(int(k)): v} )
     return modResponse
                 
-#print(getLeaderboard(sys.argv[1],sys.argv[2]))
+
